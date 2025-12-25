@@ -1,13 +1,19 @@
 import os
 from pathlib import Path
+import dj_database_url
+from dotenv import load_dotenv
+
+# Загружаем переменные окружения
+load_dotenv()
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = 'django-insecure-change-this-in-production-!@#$%^&*()'
+# Безопасный секретный ключ
+SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-change-this')
 
-DEBUG = True
+DEBUG = os.environ.get('DEBUG', 'True') == 'True'
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -17,11 +23,11 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    # Third party apps
+    # Third party
     'rest_framework',
     'corsheaders',
 
-    # Local apps
+    # Local
     'core',
     'dashboard',
     'api',
@@ -57,13 +63,24 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'thermasense_project.wsgi.application'
+# НАСТРОЙКИ БАЗЫ ДАННЫХ
+DATABASE_URL = os.environ.get('DATABASE_URL')
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+if DATABASE_URL:
+    DATABASES = {
+        'default': dj_database_url.parse(
+            DATABASE_URL,
+            conn_max_age=600,
+            ssl_require=True
+        )
     }
-}
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -94,17 +111,11 @@ MEDIA_ROOT = BASE_DIR / 'media'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# REST Framework
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.IsAuthenticatedOrReadOnly',
-    ],
-    'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework.authentication.SessionAuthentication',
-        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.permissions.AllowAny',
     ],
 }
 
-# Custom settings
-OPENWEATHER_API_KEY = ''
+OPENWEATHER_API_KEY = os.environ.get('OPENWEATHER_API_KEY', '')
 WEATHER_CITY = 'Moscow'
