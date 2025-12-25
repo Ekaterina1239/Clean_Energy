@@ -1,0 +1,121 @@
+{% extends 'base.html' %}
+
+{% block title %}Impact Visualization - ThermaSense{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col">
+        <h2><i class="bi bi-globe me-2"></i>Environmental Impact</h2>
+        <p class="text-muted">Visualizing your contribution to a sustainable future</p>
+    </div>
+</div>
+
+<!-- Impact Metrics -->
+<div class="row mb-4">
+    <div class="col-md-4 mb-3">
+        <div class="card border-success">
+            <div class="card-body text-center">
+                <div class="display-1 mb-3">🌳</div>
+                <h3>{{ total_trees|default:"25" }} Trees</h3>
+                <p class="text-muted">Equivalent CO₂ absorption</p>
+                <div class="small">One mature tree absorbs ~21 kg CO₂/year</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 mb-3">
+        <div class="card border-info">
+            <div class="card-body text-center">
+                <div class="display-1 mb-3">🚗</div>
+                <h3>{{ cars_off_road|default:"3" }} Cars</h3>
+                <p class="text-muted">Equivalent to taking cars off the road</p>
+                <div class="small">Average car emits ~4.6 tons CO₂/year</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 mb-3">
+        <div class="card border-warning">
+            <div class="card-body text-center">
+                <div class="display-1 mb-3">🏠</div>
+                <h3>{{ homes_heated|default:"2" }} Homes</h3>
+                <p class="text-muted">Energy could heat additional homes</p>
+                <div class="small">Average home uses 10,000 kWh/year for heating</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Impact Visualization -->
+<div class="card mb-4">
+    <div class="card-header">
+        <h5 class="mb-0"><i class="bi bi-bar-chart me-2"></i>Impact Over Time</h5>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-8">
+                <canvas id="impactChart" height="200"></canvas>
+            </div>
+            <div class="col-md-4">
+                <div class="impact-breakdown">
+                    <h6>Monthly Breakdown</h6>
+                    <div class="impact-item">
+                        <span>Energy Saved</span>
+                        <span class="fw-bold">{{ monthly_energy|default:"1,542" }} kWh</span>
+                    </div>
+                    <div class="impact-item">
+                        <span>CO₂ Prevented</span>
+                        <span class="fw-bold text-success">{{ monthly_co2|default:"617" }} kg</span>
+                    </div>
+                    <div class="impact-item">
+                        <span>Cost Savings</span>
+                        <span class="fw-bold text-primary">{{ monthly_savings|default:"7,710" }} руб</span>
+                    </div>
+                    <div class="impact-item">
+                        <span>Rooms Optimized</span>
+                        <span class="fw-bold">{{ optimized_rooms|default:"18" }}/{{ total_rooms|default:"24" }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Real World Comparisons -->
+<div class="card">
+    <div class="card-header bg-success text-white">
+        <h5 class="mb-0"><i class="bi bi-compass me-2"></i>Real World Impact</h5>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="comparison-card">
+                    <h6><i class="bi bi-bicycle"></i> Equivalent to:</h6>
+                    <ul class="list-unstyled">
+                        <li class="mb-2">🚴 {{ bike_km|default:"12,340" }} km by bicycle instead of car</li>
+                        <li class="mb-2">💡 {{ led_hours|default:"154,200" }} hours of LED lighting</li>
+                        <li class="mb-2">📱 {{ phone_charges|default:"154,200" }} smartphone charges</li>
+                        <li class="mb-2">🖥️ {{ laptop_hours|default:"30,840" }} hours of laptop use</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="comparison-card">
+                    <h6><i class="bi bi-graph-up-arrow"></i> If everyone did this:</h6>
+                    <div class="alert alert-info">
+                        If all universities in Russia adopted ThermaSense:
+                    </div>
+                    <ul class="list-unstyled">
+                        <li class="mb-2">🌲 {{ national_trees|default:"2.5M" }} trees equivalent</li>
+                        <li class="mb-2">🏙️ Power for {{ city_size|default:"Moscow for 3 days" }}</li>
+                        <li class="mb-2">💰 {{ national_savings|default:"$50M" }} annual savings</li>
+                        <li class="mb-2">🌍 {{ co2_national|default:"200,000" }} tons CO₂ reduction</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Share Impact -->
+        <div class="text-center mt-4">
+            <h5>Share Your Impact!</h5>
+            <p class="text-muted">Inspire others to join the movement</p>
+            <div class="btn-group">
+                <button class="btn btn-success"
