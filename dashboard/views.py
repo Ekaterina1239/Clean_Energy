@@ -7,50 +7,7 @@ from core.utils import WeatherService, RecommendationEngine
 
 
 
-def dashboard(request):
-    rooms = Room.objects.all()
-    weather = WeatherService.get_weather_data()
 
-    # Calculate statistics
-    total_rooms = rooms.count()
-    heated_rooms = rooms.filter(heating_status=True).count()
-
-    # Calculate occupied rooms
-    now = timezone.now()
-    occupied_rooms = 0
-    for room in rooms:
-        if room.occupancy_logs.filter(
-                start_time__lte=now,
-                end_time__gte=now,
-                is_active=True
-        ).exists():
-            occupied_rooms += 1
-
-    # Generate recommendations
-    recommendations = Recommendation.objects.filter(
-        is_applied=False
-    ).order_by('-priority', '-created_at')[:5]
-
-    # Calculate savings
-    total_savings = sum(r.estimated_savings for r in recommendations)
-    total_co2_saved = total_savings * 0.4
-
-    context = {
-        'total_rooms': total_rooms,
-        'heated_rooms': heated_rooms,
-        'occupied_rooms': occupied_rooms,
-        'weather': weather,
-        'recommendations': recommendations,
-        'total_savings_kwh': total_savings,
-        'total_co2_saved_kg': total_co2_saved,
-        'total_money_saved': total_savings * 5.0,
-        'rooms': rooms,
-    }
-
-    return render(request, 'dashboard/dashboard.html', context)
-
-
-@login_required
 def reports(request):
     # Sample data for charts
     labels = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']

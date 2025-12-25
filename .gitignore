@@ -42,3 +42,8 @@ env/
 *.swo
 *~
 .DS_Store
+
+# Compiled Python files
+*.pyc
+*.pyo
+*.pyd
