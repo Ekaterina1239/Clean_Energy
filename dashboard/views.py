@@ -6,7 +6,7 @@ from core.models import Room, OccupancyLog, WeatherCache, Recommendation
 from core.utils import WeatherService, RecommendationEngine
 
 
-@login_required
+
 def dashboard(request):
     rooms = Room.objects.all()
     weather = WeatherService.get_weather_data()
@@ -84,7 +84,7 @@ def reports(request):
     return render(request, 'dashboard/reports.html', context)
 
 
-@login_required
+
 def energy_analytics(request):
     """Расширенная аналитика энергопотребления"""
 
@@ -162,7 +162,6 @@ def calculate_room_energy(room):
     }
 
 
-@login_required
 def thermal_visualization(request):
     """3D тепловая визуализация здания"""
     rooms = Room.objects.all()
@@ -205,7 +204,7 @@ def thermal_visualization(request):
     return render(request, 'dashboard/thermal_viz.html', context)
 
 
-@login_required
+
 def dashboard(request):
     rooms = Room.objects.all()
     weather = WeatherService.get_weather_data()

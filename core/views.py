@@ -5,7 +5,7 @@ from .models import Room, OccupancyLog
 from .utils import WeatherService, ThermalCalculator
 
 
-@login_required
+
 def room_list(request):
     rooms = Room.objects.all()
 
@@ -28,7 +28,7 @@ def room_list(request):
     return render(request, 'core/room_list.html', context)
 
 
-@login_required
+
 def room_detail(request, pk):
     room = get_object_or_404(Room, pk=pk)
     weather = WeatherService.get_weather_data()
@@ -79,7 +79,7 @@ def room_detail(request, pk):
     return render(request, 'core/room_detail.html', context)
 
 
-@login_required
+
 def toggle_heating(request, pk):
     room = get_object_or_404(Room, pk=pk)
     room.heating_status = not room.heating_status
@@ -88,7 +88,6 @@ def toggle_heating(request, pk):
     return room_detail(request, pk)
 
 
-@login_required
 def generate_recommendations(request):
     from .utils import RecommendationEngine
 
