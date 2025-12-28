@@ -17,11 +17,9 @@ class LiveDataGenerator:
 
     def __init__(self):
         self.rooms = list(Room.objects.all())
-        self.base_temp = -5.0  # Базовая температура зимой
+        self.base_temp = -5.0
 
     def simulate_day_night_cycle(self, hour):
-        """Симуляция суточного цикла температуры"""
-        # Ночью холоднее, днем теплее
         if 0 <= hour < 6:  # Ночь
             return self.base_temp - random.uniform(1, 3)
         elif 6 <= hour < 12:  # Утро
@@ -62,21 +60,19 @@ class LiveDataGenerator:
             cached_at=now
         )
 
-        # Генерируем данные для каждой комнаты
+
         for room in self.rooms:
             is_occupied = self.simulate_occupancy_pattern(room, hour)
 
-            # Автоматически включаем/выключаем отопление на основе занятости
             if is_occupied and not room.heating_status:
                 room.heating_status = True
                 room.save()
             elif not is_occupied and room.heating_status:
-                # С вероятностью 70% выключаем, если комната пуста
                 if random.random() > 0.3:
                     room.heating_status = False
                     room.save()
 
-            # Создаем лог энергии
+
             if room.heating_status:
                 temp_inside = room.target_temperature
                 heating_power = room.area * 0.1 * random.uniform(0.8, 1.2)
@@ -96,7 +92,6 @@ class LiveDataGenerator:
         print(f"[{now.strftime('%Y-%m-%d %H:%M')}] Generated data: {current_temp}°C, {len(self.rooms)} rooms")
 
     def get_weather_description(self, temperature):
-        """Получение описания погоды по температуре"""
         if temperature < -10:
             return "Heavy Snow"
         elif temperature < -5:
@@ -109,7 +104,6 @@ class LiveDataGenerator:
             return "Partly Cloudy"
 
     def run_continuous(self, interval_minutes=5):
-        """Непрерывная генерация данных"""
         print("🌡️ Starting live data generation...")
         print(f"   Rooms: {len(self.rooms)}")
         print(f"   Interval: {interval_minutes} minutes")
@@ -127,13 +121,8 @@ class LiveDataGenerator:
 if __name__ == '__main__':
     generator = LiveDataGenerator()
 
-    # Проверяем, есть ли комнаты
     if not generator.rooms:
         print("❌ No rooms found. Please create rooms first.")
         print("Run: python manage.py shell < populate_data.py")
     else:
-        # Запускаем однократную генерацию
         generator.generate_hourly_data()
-
-        # Или запускаем непрерывную генерацию (раскомментируйте)
-        # generator.run_continuous(interval_minutes=5)
