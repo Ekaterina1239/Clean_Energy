@@ -2,13 +2,11 @@ import os
 from pathlib import Path
 import dj_database_url
 from dotenv import load_dotenv
-
-# Загружаем переменные окружения
 load_dotenv()
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# Безопасный секретный ключ
+
 SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-change-this')
 
 DEBUG = os.environ.get('DEBUG', 'True') == 'True'
@@ -35,6 +33,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
