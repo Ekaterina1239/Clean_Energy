@@ -6,12 +6,12 @@ load_dotenv()
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
 SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-change-this')
 
 DEBUG = os.environ.get('DEBUG', 'True') == 'True'
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
+# ИСПРАВЛЕНО: добавлен ваш домен Render
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'clean-energy-89wl.onrender.com']
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -62,7 +62,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'thermasense_project.wsgi.application'
-# НАСТРОЙКИ БАЗЫ ДАННЫХ
+
 DATABASE_URL = os.environ.get('DATABASE_URL')
 
 if DATABASE_URL:
